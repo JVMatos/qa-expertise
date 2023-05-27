@@ -98,13 +98,7 @@ Bloco do teste:
 it('Login com sucesso no sistema', () => {
 	// Chama o comando customizado enviando os dados de login e senha que estão no arquivo cypress.env.json
 
-	cy.doLogin(
-		Cypress.env('user_email'),
-
-		Cypress.env('user_password'),
-
-		options
-	);
+	cy.doLogin(Cypress.env('user_email'), Cypress.env('user_password'), options);
 });
 ```
 
@@ -113,56 +107,39 @@ Comando Customizado:
 ```javascript
 Cypress.Commands.add(
 	'doLogin',
-
 	(
 		user = Cypress.env('user_email'),
-
 		password = Cypress.env('user_password'),
-
 		{ cacheSession = true } = {}
 	) => {
 		// Variável que contém os comandos para realizar o login via UI
-
 		const login = () => {
 			cy.visit('/');
-
 			cy.get("input[name='email']").type(user);
-
 			cy.get("input[name='senha']").type(password, {
 				log: false,
 			});
-
 			cy.intercept('POST', '/login').as('getToken');
-
 			cy.contains("button[name='login']", 'Login').click();
-
 			cy.wait('@getToken').its('response.statusCode').should('eq', 200);
-
-			cy.contains(
-				'div.message',
-
-				'Olá, ' + Cypress.env('user_name')
-			).should('be.visible');
+			cy.contains('div.message', 'Olá, ' + Cypress.env('user_name')).should(
+				'be.visible'
+			);
 		};
 
 		// Variável para validação do Login
-
 		const validate = () => {
 			cy.visit('/');
-
 			cy.location('pathname', { timeout: 1000 }).should('not.eq', '/');
 		};
 
 		// Variável com as opções do comando Session
-
 		const options = {
 			cacheAcrossSpecs: true,
-
 			validate,
 		};
 
 		// Condicional para carregar a sessão anterior ou realizar um novo login
-
 		if (cacheSession) {
 			cy.session(user, login, options);
 		} else {
@@ -177,43 +154,30 @@ Exemplo de comando customizado para login via API:
 ```javascript
 Cypress.Commands.add(
 	'postLogin',
-
 	(
 		user = Cypress.env('user_email'),
-
 		password = Cypress.env('user_password')
 	) => {
 		// Comando que realiza a requisição POST na API
-
 		cy.request({
 			method: 'POST',
-
 			url: `${Cypress.env('baseUrlApi')}/login`,
-
 			body: {
 				email: user,
-
 				senha: password,
 			},
 		}).then((response) => {
 			// Recebe os dados retornados da API e os define no localStorage do navegador
-
 			localStorage.setItem('access', response.body.token);
-
 			localStorage.setItem(
 				'user',
-
 				JSON.stringify({
 					fullName: response.body.usuario.nome,
-
 					email: response.body.usuario.email,
-
 					avatar: response.body.usuario.imagem
 						? 'data:image/jpeg;base64,' + response.body.usuario.imagem
 						: undefined,
-
 					status: response.body.usuario.status,
-
 					id: response.body.usuario.id,
 				})
 			);
@@ -227,60 +191,42 @@ Exemplo de comando customizado para post com FormData:
 ```javascript
 Cypress.Commands.add('postImage', (image) => {
 	// Recebe uma imagem utilizando o comando cy.fixture e constrói um FormData
-
 	cy.fixture('img/test_img.png').then((fileContent) => {
 		const blob = Cypress.Blob.binaryStringToBlob(fileContent, 'image/png');
-
 		const formData = new FormData();
-
 		formData.append('titulo', image.titulo);
-
 		formData.append('descricao', image.descricao);
-
 		formData.append('imagem', blob, 'image.png');
 
 		// Realiza uma requisição que pega o token do login para realizar o POST da imagem
-
 		cy.getToken(Cypress.env('user_email'), Cypress.env('user_password')).then(
 			() => {
 				cy.request({
 					method: 'POST',
-
 					url: `${Cypress.env('baseUrlApi')}/images`,
-
 					headers: {
 						Authorization: `Bearer ${Cypress.env('token')}`,
-
 						'content-type': 'multipart/form-data',
 					},
-
 					body: formData,
 				})
 
 					.then(({ status, body }) => {
 						// Valida o status da requisição e converte o arrayBuffer para leitura, salvando-o em um arquivo .json
-
 						expect(status, 'Status').to.eq(201);
-
 						const decoder = new TextDecoder('utf-8');
-
 						responseBody = decoder.decode(body);
-
 						cy.writeFile(
 							'cypress/fixtures/write-file/postImage.json',
-
 							responseBody
 						);
 					})
 
 					.then(() => {
 						// Valida as informações da requisição após a conversão
-
 						const responseObj = JSON.parse(responseBody);
-
 						cy.wrap(responseObj).then((wrappedResponse) => {
 							expect(wrappedResponse.descricao).to.equal(image.descricao);
-
 							expect(wrappedResponse.titulo).to.equal(image.titulo);
 						});
 					});
@@ -296,20 +242,15 @@ Conexão com o banco:
 
 ```javascript
 const { defineConfig } = require('cypress');
-
 const mysql = require('mysql');
-
 function queryTestDb(query, config) {
 	const connection = mysql.createConnection(config.env.db);
-
 	connection.connect();
-
 	return new Promise((resolve, reject) => {
 		connection.query(query, (err, result) => {
 			if (err) reject(err);
 			else {
 				connection.end();
-
 				return resolve(result);
 			}
 		});
@@ -329,11 +270,8 @@ module.exports = defineConfig({
 		env: {
 			db: {
 				host: 'localhost',
-
 				user: 'root',
-
 				password: 'root',
-
 				database: 'database',
 			},
 		},
