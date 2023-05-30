@@ -40,19 +40,19 @@ Anteriormente, trabalhei como designer, o que também contribui para uma melhor 
 
 Aqui cito alguns dos projetos em que já trabalhei:
 
-1.  **Banian** - [https://materiais.levelgroup.com.br/banian](https://materiais.levelgroup.com.br/banian)
+1.  **Banian** - 07/2022 até 12/2022 - [https://materiais.levelgroup.com.br/banian](https://materiais.levelgroup.com.br/banian)
 
 O Banian é um sistema de homologação de fornecedores, cujo principal objetivo é ajudar os clientes a construírem toda sua cadeia de suprimentos de maneira sólida e estruturada, ao mesmo tempo em que os auxilia a acessar informações sobre seus parceiros e fornecedores.
 
-2.  **PAGU Unicamp** - [https://www.pagu.unicamp.br/](https://www.pagu.unicamp.br/)
+2.  **PAGU Unicamp** - 06/2022 até 12/2022 - [https://www.pagu.unicamp.br/](https://www.pagu.unicamp.br/)
 
 O Pagu é uma plataforma de um Núcleo de Estudos de Gênero da Universidade de Campinas utilizada para publicações, gerenciamento de eventos, publicações de pesquisas e afins.
 
-3.  **Neto Veículos**
+3.  **Neto Veículos** - 12/2022 até 03/2023
 
 Sistema de gerenciamento, controle de estoque, vendas, cadastro de clientes, fornecedores e afins de uma concessionária.
 
-4.  **Em Desenvolvimento - Sistema de Despachante**
+4.  **Em Desenvolvimento - Sistema de Despachante** 01/2023 - Atualmente
 
 Atualmente estou trabalhando em um sistema voltado para a área de despachantes, fazendo a intermediação entre o cliente e o prestador de serviço.
 
